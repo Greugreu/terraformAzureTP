@@ -5,6 +5,13 @@ terraform {
       version = "3.48.0"
     }
   }
+
+  backend "azurerm" {
+    resource_group_name  = "rg-tfstate"
+    storage_account_name = "samfolabs2023"
+    container_name       = "tfstate"
+    key                  = "vclarke.tfstate"
+  }
 }
 
 provider "azurerm" {
@@ -32,3 +39,4 @@ resource "azurerm_linux_web_app" "AzurermWebApp" {
   service_plan_id     = azurerm_resource_group.TPAzureGroup.id
   site_config {}
 }
+
