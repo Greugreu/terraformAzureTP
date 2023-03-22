@@ -9,6 +9,7 @@ terraform {
 
 provider "azurerm" {
   # configuration options
+  features {}
 }
 
 resource "azurerm_resource_group" "TPAzureGroup" {
