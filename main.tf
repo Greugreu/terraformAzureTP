@@ -29,8 +29,6 @@ resource "azurerm_linux_web_app" "AzurermWebApp" {
   name                = "web-${var.projectName}${var.environment_suffix}"
   resource_group_name = azurerm_resource_group.TPAzureGroup.name
   location            = azurerm_resource_group.TPAzureGroup.location
-  os_type             = "Linux"
-  sku_name            = "P1v2"
   service_plan_id     = azurerm_resource_group.TPAzureGroup.id
   site_config {}
 }
