@@ -140,7 +140,7 @@ resource "azurerm_container_group" "console" {
 
   container {
     name   = "console"
-    image  = "matthieuf/pubsub-console:1.0"
+    image  = "greugreu/pubsub-console:1.0"
     cpu    = "0.5"
     memory = "1.5"
 
