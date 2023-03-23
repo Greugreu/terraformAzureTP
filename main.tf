@@ -35,6 +35,18 @@ resource "azurerm_linux_web_app" "AzurermWebApp" {
   location            = azurerm_resource_group.TPAzureGroup.location
   service_plan_id     = azurerm_service_plan.AzurermServicePlan.id
   site_config {}
+  
+  connection_string {
+    name = "DefaultConnection"
+    value = "Server=tcp:${azurerm_mssql_server.sql-srv.fully_qualified_domain_name},1433;Initial Catalog=${azurerm_mssql_database.sql-db.name};Persist Security Info=False;User ID=${data.azurerm_key_vault_secret.database-username.value};Password=${data.azurerm_key_vault_secret.database-password.value};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    type = "SQLAzure"
+  }
+  
+  app_settings = {
+    "RabbitMQ__Hostname" = "rabbitmq",
+    "RabbitMQ__Username" = data.azurerm_key_vault_secret.rabbitmq-login.value,
+    "RabbitMQ__Password" = data.azurerm_key_vault_secret.rabbitmq-password.value
+  }
 }
 
 resource "azurerm_mssql_server" "sql-srv" {
@@ -42,8 +54,8 @@ resource "azurerm_mssql_server" "sql-srv" {
   location                     = data.azurerm_resource_group.rg-vclarke.location
   resource_group_name          = data.azurerm_resource_group.rg-vclarke.name
   version                      = "12.0"
-  administrator_login          = data.azurerm_key_vault.kv.database-login.value
-  administrator_login_password = data.azurerm_key_vault.kv.database-password.value
+  administrator_login          = data.azurerm_key_vault_secret.database-username.value
+  administrator_login_password = data.azurerm_key_vault_secret.database-password.value
 }
 
 resource "azurerm_mssql_database" "sql-db" {
