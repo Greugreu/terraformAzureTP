@@ -16,6 +16,10 @@ provider "azurerm" {
   features {}
 }
 
+###############
+# Azure: Resource Group && Service
+###############
+
 resource "azurerm_resource_group" "TPAzureGroup" {
   location = var.location
   name     = "rg-${var.projectName}${var.environment_suffix}"
@@ -28,6 +32,10 @@ resource "azurerm_service_plan" "AzurermServicePlan" {
   os_type             = "Linux"
   sku_name            = "P1v2"
 }
+
+###############
+# Azure: WebApp
+###############
 
 resource "azurerm_linux_web_app" "AzurermWebApp" {
   name                = "web-${var.projectName}${var.environment_suffix}"
@@ -52,6 +60,10 @@ resource "azurerm_linux_web_app" "AzurermWebApp" {
     "RabbitMQ__Password" = data.azurerm_key_vault_secret.rabbitmq-password.value
   }
 }
+
+###############
+# Azure: Database
+###############
 
 resource "azurerm_mssql_server" "sql-srv" {
   name                         = "sqlsrv-${var.projectName}${var.environment_suffix}"
